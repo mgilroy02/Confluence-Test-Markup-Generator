@@ -5,7 +5,7 @@
 using namespace std;
 
 static const bool useSuppliedText = true;  //Set to true when deploying to run on the kelvin 2 cluster
-static const string keywords[5] = { "def", "given:", "when:" , "then:", "and:" };
+static const string keywords[6] = { "def", "given:", "when:" , "then:", "and:", "where:"};
 
 #pragma region
 std::string upperCase(std::string input) {
@@ -37,7 +37,11 @@ vector<string> getText() {
 			+ string("		createJobTask(string)\n")
 			+ string("then: \"Check result\"\n")
 			+ string("		checkResult()\n")
-			+ "}"; //converted implicitly to string
+			+ string("where: \"Loop Number	|	Why\"\n")
+			+ string("			1			|	\"I said so\"\n")
+			+ string("			2			|	\"I said so\"\n")
+			+ string("			3			|	\"I said so\"\n")
+			+ "		}"; //converted implicitly to string
 	}
 	else {
 		text = "placeholder"; //todo read from file for functionality to be enabled for work task
@@ -82,6 +86,8 @@ void printKeywords(string i, string keywordFound) {
 int main()
 {
 	vector<string> lineList = getText();
+
+	bool isInAWhere = false;
 	for (auto i = lineList.begin(); i != lineList.end(); ++i) {
 		string keywordFound = "";
 
@@ -100,15 +106,28 @@ int main()
 			delete[] textChar;
 		}
 
-
+		if ((*i).find("     }") != std::string::npos) {
+			isInAWhere = false;
+		}
 
 		if (keywordFound.compare("def") == 0) { //Text titles have slightly different processing needed
+			cout << "\n\n\n" << endl;
 			printTestTitle(*i, keywordFound);
+		}
+		else if (keywordFound.compare("where:") == 0) {
+			isInAWhere = true;
+			printKeywords(*i, keywordFound);
+		}
+		else if (isInAWhere == true) {
+			cout << "**" + *i << endl; //Tabs & bulletpoints the string (Keeps printing the lines after the where)
 		}
 		else if (keywordFound.length() != 0) {
 			printKeywords(*i, keywordFound);
 		}
+
 	}
+
+	vector<string>().swap(lineList); //Clear doesn't guarantee freeing up of memory, swapping with empty vector does
 
 	return 0;
 }
