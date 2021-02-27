@@ -1,0 +1,29 @@
+def "Testing on the Cluster"
+given: "We have a supplied string"
+billy = 7
+when: "Deploy to the cluster"
+deploy(string)
+and: "Create job task"
+createJobTask(string)
+then: "Check result"
+checkResult()
+where: Loop Number	|	Why
+1			|	"I said so"
+2			|	"I said so"
+3			|	"I said so"
+
+
+
+def "Testing on the Cluster"
+given: "We have a supplied string"
+billy = 7
+when: "Deploy to the cluster"
+deploy(string)
+and: "Create job task"
+createJobTask(string)
+then: "Check result"
+checkResult()
+where: Loop Number	|	Why
+1			|	"I said so"
+2			|	"I said so"
+3			|	"I said so"
