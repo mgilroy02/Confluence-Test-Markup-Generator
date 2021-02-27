@@ -1,12 +1,17 @@
 package com.company;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Hey Critic,  This code is so hacky but it was wrote in 30 minutes while watching TV
+ * Goal was to be faster to do this than to document tests I wrote for a ticket
+ */
 public class Main {
 
     enum keywords {
@@ -21,7 +26,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
         String txtFileName = "";
         if (args.length > 1){
             System.out.println("First and only arg is the file name that contains the tests");
@@ -31,7 +36,8 @@ public class Main {
         } else {
             txtFileName = args[0];
         }
-        String directory = System.getProperty("user.dir") + "\\" + args[0];
+
+        String directory = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath().replace("TestMarkupGenerator.jar", "") + "\\" + txtFileName;
         System.out.println("Working with : " + directory);
 
         Path path = Paths.get(directory);
