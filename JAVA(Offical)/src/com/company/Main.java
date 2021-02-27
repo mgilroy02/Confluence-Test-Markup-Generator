@@ -15,7 +15,7 @@ import java.util.Optional;
 public class Main {
 
     enum keywords {
-        DEF("def"), GIVEN("given:"), WHEN("when:"), THEN("then:"), AND("and:"), WHERE("where:");
+        DEF("def \""), GIVEN("given:"), WHEN("when:"), THEN("then:"), AND("and:"), WHERE("where:");
 
 
         public final String literal;
@@ -65,7 +65,7 @@ public class Main {
             Optional<keywords> keywordFound = Arrays.asList(keywords.values()).stream().filter(e -> finalLine.contains(e.getLiteral())).findFirst();
 
             if (inWhere){
-                if (line.trim().isEmpty()){
+                if (line.trim().isEmpty() || line.trim().equals("}")){
                     inWhere = false;
                     continue;
                 }
@@ -78,12 +78,12 @@ public class Main {
             line =  line.replace(keywordFound.get().getLiteral(), ""); //Replace "Given: We run a test" with "", so then we just have "We run a test"
             keywords keyWord = keywordFound.get();
 
+            line = line.trim();
             line = line.replace("\"", "");
             line = line.replace("and:", ""); //Could add an if statement for AND but performance wise and spaghetti wise, just have a replace on "and:"
             if (keyWord == keyWord.DEF){
                 print("\n\n\n");
-                line = line.replace("(", "");
-                line = line.replace(")", "");
+                line = line.substring(0, line.indexOf("("));
                 print("h3." + line);
             } else {
                 if (keyWord == keyWord.WHERE){
