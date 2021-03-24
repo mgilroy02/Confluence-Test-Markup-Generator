@@ -37,7 +37,8 @@ public class Main {
             txtFileName = args[0];
         }
 
-        String directory = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath().replace("TestMarkupGenerator.jar", "") + "\\" + txtFileName;
+        //String directory = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath().replace("TestMarkupGenerator.jar", "") + "\\" + txtFileName;
+        String directory = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath().replace("TestMarkupGenerator.jar", "") + "/" + txtFileName;
         System.out.println("Working with : " + directory);
 
         Path path = Paths.get(directory);
@@ -59,6 +60,7 @@ public class Main {
 
         String line;
         boolean inWhere = false;
+        boolean firstTest = true;
         while ((line = reader.readLine()) != null){
 
             String finalLine = line;
@@ -82,15 +84,22 @@ public class Main {
             line = line.replace("\"", "");
             line = line.replace("and:", ""); //Could add an if statement for AND but performance wise and spaghetti wise, just have a replace on "and:"
             if (keyWord == keyWord.DEF){
+                if (!firstTest){
+                    print("{expand}"); //Close off the expand box
+                } else {
+                    firstTest = false;
+                }
                 print("\n\n\n");
                 line = line.substring(0, line.indexOf("("));
+                print("{expand:title=" + line + "}"); //print expand box
                 print("h3." + line);
             } else {
                 if (keyWord == keyWord.WHERE){
                     inWhere = true;
                 }
+                print("\n");
                 print("*" + keyWord.getLiteral() + "*"); //Bolds Keyword
-                print("**" + line); //Tabs & bulletpoints the string
+                print("*" + line); //Tabs & bulletpoints the string
             }
         }
 
