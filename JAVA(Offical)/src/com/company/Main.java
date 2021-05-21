@@ -69,6 +69,7 @@ public class Main {
             if (inWhere){
                 if (line.trim().isEmpty() || line.trim().equals("}")){
                     inWhere = false;
+                    print("{expand}"); //Close off the expand box
                     continue;
                 }
                 print("**" + line); //Tabs & bulletpoints the string
@@ -87,7 +88,6 @@ public class Main {
                 if (!firstTest){
                     print("{expand}"); //Close off the expand box
                 } else {
-                    firstTest = false;
                 }
                 print("\n\n\n");
                 line = line.substring(0, line.indexOf("("));
@@ -98,10 +98,13 @@ public class Main {
                     inWhere = true;
                 }
                 print("\n");
-                print("*" + keyWord.getLiteral() + "*"); //Bolds Keyword
-                print("*" + line); //Tabs & bulletpoints the string
+                if (keyWord != keyWord.AND){
+                    print("*" + keyWord.getLiteral() + "*"); //Prints and Bolds Keyword
+                }
+                print("* " + line); //Tabs & bulletpoints the string
             }
         }
+
 
         reader.close();
     }
