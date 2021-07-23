@@ -88,6 +88,7 @@ public class Main {
                 if (!firstTest){
                     print("{expand}"); //Close off the expand box
                 } else {
+                    firstTest = false;
                 }
                 print("\n\n\n");
                 line = line.substring(0, line.indexOf("("));
